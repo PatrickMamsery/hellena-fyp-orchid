@@ -62,7 +62,7 @@ class PropertyController extends BaseController
    
     public function getOfficer($id=null)
     {
-        $properties = Report::latest('updated_at')->paginate();
+        $properties = Report::latest('updated_at')->get();
         $role_id = CustomRole::where("name","Officer")->first()->id;
         $user = User::when($id,function($query,$id){
             return $query->where('id',$id);

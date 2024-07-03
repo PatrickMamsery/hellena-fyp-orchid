@@ -23,7 +23,7 @@ class ReportController extends BaseController
     {
         $reports = Report::when($user_id, function($query,$user_id){
             return $query->where('user_id',$user_id);
-        })->latest('updated_at')->paginate();
+        })->latest('updated_at')->get();
 
         if (count($reports) == 0) {
             return $this->sendError('RETRIEVE_MANY_FAILED', 'No reports found', 404);

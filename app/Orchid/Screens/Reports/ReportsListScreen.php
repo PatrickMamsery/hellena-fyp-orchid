@@ -156,6 +156,8 @@ class ReportsListScreen extends Screen
     {
         // dd($request->query('status'));
         $reports = Report::with('property')
+             ->filters()
+            ->filtersApplySelection(ReportFiltersLayout::class)
             // ->where('status', $request->get('status'))
             ->get();
 

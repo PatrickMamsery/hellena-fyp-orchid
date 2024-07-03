@@ -35,11 +35,14 @@ class ReportsListScreen extends Screen
      */
     public function query(): array
     {
+        // return [
+        //     'reports' => Report::with('property')
+        //         ->filters()
+        //         ->filtersApplySelection(ReportFiltersLayout::class)
+        //         ->paginate(),
+        // ];
         return [
-            'reports' => Report::with('property')
-                ->filters()
-                ->filtersApplySelection(ReportFiltersLayout::class)
-                ->paginate(),
+            'reports' => $this->getFilteredReports()->paginate(),
         ];
     }
 
@@ -142,9 +145,19 @@ class ReportsListScreen extends Screen
         Toast::info(__('Report was deleted successfully'));
     }
 
-    public function downloadAllReports()
+    private function getFilteredReports()
     {
-        $reports = Report::with('property')->get();
+        return Report::with('property')
+            ->filters()
+            ->filtersApplySelection(ReportFiltersLayout::class);
+    }
+
+    public function downloadAllReports(Request $request)
+    {
+        // dd($request->query('status'));
+        $reports = Report::with('property')
+            // ->where('status', $request->get('status'))
+            ->get();
 
         $rows = [];
         foreach ($reports as $report) {
